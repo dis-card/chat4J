@@ -32,7 +32,7 @@ public class SendMessageService extends ChatService {
 		
 		scanner = new Scanner(System.in);
 		try {
-			sock = new Socket(getUser().getIpAddress(), Integer.parseInt(getConfig().getProperty(ChatService.SRVR_PORT)));
+			sock = new Socket(getUser().getIpAddress(), Integer.parseInt(getConfig().getProperty(ChatService.MSG_SRVR_PORT)));
 			
 		} catch (UnknownHostException e) {
 

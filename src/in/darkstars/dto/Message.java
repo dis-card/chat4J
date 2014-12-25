@@ -14,8 +14,7 @@ public class Message implements Serializable {
 	private String message;
 	private User from;
 	private User to;
-	private InetAddress source;
-	private InetAddress destination;
+	
 	
 	
 	public String getMessage() {
@@ -45,26 +44,6 @@ public class Message implements Serializable {
 
 	public void setTo(User to) {
 		this.to = to;
-	}
-
-
-	public InetAddress getSource() {
-		return source;
-	}
-
-
-	public void setSource(InetAddress source) {
-		this.source = source;
-	}
-
-
-	public InetAddress getDestination() {
-		return destination;
-	}
-
-
-	public void setDestination(InetAddress destination) {
-		this.destination = destination;
 	}
 
 

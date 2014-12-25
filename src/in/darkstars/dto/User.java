@@ -6,7 +6,7 @@ import java.net.InetAddress;
 public class User implements Serializable {
 	
 	private String nickName;
-	private InetAddress ipAddress;
+	private String ipAddress;
 	public enum	Status {
 		Available,
 		Offline,
@@ -22,10 +22,10 @@ public class User implements Serializable {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
-	public InetAddress getIpAddress() {
+	public String getIpAddress() {
 		return ipAddress;
 	}
-	public void setIpAddress(InetAddress ipAddress) {
+	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
 	public Status getStatus() {

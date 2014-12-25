@@ -34,7 +34,7 @@ public class RecieveMessageService extends ChatService {
 		
 		try {
 			
-			server = new ServerSocket( Integer.parseInt( (String)getConfig().get(ChatService.SRVR_PORT) ));
+			server = new ServerSocket( Integer.parseInt( (String)getConfig().get(ChatService.MSG_SRVR_PORT) ));
 			this.serverPort = server.getLocalPort();
 		} catch (NumberFormatException e) {
 		

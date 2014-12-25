@@ -6,16 +6,33 @@ import in.darkstars.dto.User;
 
 /**
  * @author dis-card
- *
- * Dec 25, 2014
+ * 
+ *         Dec 25, 2014
  */
 
-public abstract class Event implements Serializable {
-	
+public class Event implements Serializable {
+
 	private User user;
-	
-	public Event ( User user ) {
-		
-		this.user = user;
+
+	public enum Type {
+		Online, Offline, KeepAlive
 	}
+
+	public Event(User user, Type eventType) {
+
+		this.user = user;
+		this.type = eventType;
+	}
+
+	private Type type;
+
+	public User getUser() {
+		return user;
+	}
+	
+	public Type getType () {
+		return type;
+	}
+
+
 }

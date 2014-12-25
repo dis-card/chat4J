@@ -3,6 +3,7 @@ package in.darkstars.main;
 import in.darkstars.dto.User;
 import in.darkstars.exception.ConfigInitException;
 import in.darkstars.helper.Messages;
+import in.darkstars.service.KeepAliveService;
 import in.darkstars.service.RecieveMessageService;
 import in.darkstars.service.SendMessageService;
 
@@ -48,14 +49,23 @@ public class Test {
 			LOGGER.fatal(e);
 		}
 		RecieveMessageService recieve = new RecieveMessageService();
-		User user = new User ();
-		recieve.init(confObject, user);
+		User me = new User ();
+		me.setIpAddress("192.168.1.13");
+		me.setNickName("Vikash");
+		me.setStatus(User.Status.Available);
+		recieve.init(confObject, me);
 		Thread reciever = new Thread(recieve, "recieverThread");
 		reciever.start();
 		SendMessageService send = new SendMessageService();
-		send.init(confObject, user);
+		send.init(confObject, me);
 		Thread sender = new Thread(send, "senderThread");
 		sender.start();
+		
+		/*KeepAliveService keepAlive = new KeepAliveService();
+		keepAlive.init(confObject, user);
+		Thread keepAliver = new Thread(send, "keepAliverThread");
+		keepAliver.start();*/
+		
 	}
 
 }

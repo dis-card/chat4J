@@ -1,6 +1,8 @@
 package in.darkstars.service;
 
-import in.darkstars.event.OnlineEvent;
+
+
+import in.darkstars.event.Event;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -23,7 +25,9 @@ public class KeepAliveService extends ChatService {
 	public void run () {
 		
 		try {
-			out.writeObject(new OnlineEvent( getUser()));
+			out.writeObject(new Event( getUser(), Event.Type.KeepAlive ));
+			out.flush();
+			System.out.println("Online");
 			Thread.sleep( Integer.parseInt(getConfig().getProperty(KEEP_ALIVE) ));
 			
 		} catch (IOException e) {
