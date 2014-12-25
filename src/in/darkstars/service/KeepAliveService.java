@@ -57,7 +57,7 @@ public class KeepAliveService extends ChatService {
 		
 		try {
 			
-			sock = new Socket(broadCastAddress,Integer.parseInt(getConfig().getProperty(ChatService.SRVR_PORT)));
+		//	sock = new Socket(broadCastAddress,Integer.parseInt(getConfig().getProperty(ChatService.SRVR_PORT)));
 			out = new ObjectOutputStream( sock.getOutputStream() );
 			
 		} catch (NumberFormatException e) {

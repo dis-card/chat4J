@@ -3,6 +3,7 @@ package in.darkstars.main;
 import in.darkstars.dto.User;
 import in.darkstars.exception.ConfigInitException;
 import in.darkstars.helper.Messages;
+import in.darkstars.presentation.UserInterface;
 import in.darkstars.service.KeepAliveService;
 import in.darkstars.service.RecieveMessageService;
 import in.darkstars.service.SendMessageService;
@@ -61,6 +62,10 @@ public class Test {
 		Thread sender = new Thread(send, "senderThread");
 		sender.start();
 		
+		UserInterface ui = new UserInterface();
+		ui.init(confObject);
+		Thread uit = new Thread(ui,"userInterfaceThread");
+		uit.start();
 		/*KeepAliveService keepAlive = new KeepAliveService();
 		keepAlive.init(confObject, user);
 		Thread keepAliver = new Thread(send, "keepAliverThread");

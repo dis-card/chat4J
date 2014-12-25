@@ -99,7 +99,7 @@ public class RecieveEventService extends ChatService {
 		
 		Utils.close(ois);
 		Utils.close(bis);
-		
+		sock.close();
 		
 	}
 
