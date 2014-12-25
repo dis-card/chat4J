@@ -7,5 +7,13 @@ public class FindUserService extends ChatService {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	protected void init () {
+		
+	}
+	
+	public void destroy () {
+		
+	}
 
 }

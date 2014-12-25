@@ -26,17 +26,13 @@ public class SendMessageService extends ChatService {
 	private StringBuilder message;
 	private Socket sock;
 	private ObjectOutputStream out;
-	private User user;
 	
-	public void SendMessageService ( User user ) {
-		this.user = user;
-	}
 	
-	public void init () {
+	protected void init () {
 		
 		scanner = new Scanner(System.in);
 		try {
-			sock = new Socket(user.getIpAddress(), Integer.parseInt(getConfig().getProperty(ChatService.SRVR_PORT)));
+			sock = new Socket(getUser().getIpAddress(), Integer.parseInt(getConfig().getProperty(ChatService.SRVR_PORT)));
 			
 		} catch (UnknownHostException e) {
 
@@ -96,5 +92,8 @@ public class SendMessageService extends ChatService {
 			LOGGER.error(e);
 		}
 	}
+
+
+	
 
 }

@@ -1,5 +1,6 @@
 package in.darkstars.main;
 
+import in.darkstars.dto.User;
 import in.darkstars.exception.ConfigInitException;
 import in.darkstars.helper.Messages;
 import in.darkstars.service.RecieveMessageService;
@@ -47,10 +48,12 @@ public class Test {
 			LOGGER.fatal(e);
 		}
 		RecieveMessageService recieve = new RecieveMessageService();
-		recieve.init(confObject);
+		User user = new User ();
+		recieve.init(confObject, user);
 		Thread reciever = new Thread(recieve, "recieverThread");
 		reciever.start();
 		SendMessageService send = new SendMessageService();
+		send.init(confObject, user);
 		Thread sender = new Thread(send, "senderThread");
 		sender.start();
 	}

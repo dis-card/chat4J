@@ -1,8 +1,9 @@
 package in.darkstars.dto;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 
-public class User {
+public class User implements Serializable {
 	
 	private String nickName;
 	private InetAddress ipAddress;
