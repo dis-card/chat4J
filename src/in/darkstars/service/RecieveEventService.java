@@ -1,7 +1,22 @@
 package in.darkstars.service;
 
+/*Copyright (c) <2014> <dis-card>.
+All rights reserved.
+
+Redistribution and use in source and binary forms are permitted
+provided that the above copyright notice and this paragraph are
+duplicated in all such forms and that any documentation,
+advertising materials, and other materials related to such
+distribution and use acknowledge that the software was developed
+by the <dis-card>. The name of the
+<dis-card> may not be used to endorse or promote products derived
+from this software without specific prior written permission.
+THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.*/
+
+import in.darkstars.dto.Event;
 import in.darkstars.dto.User;
-import in.darkstars.event.Event;
 import in.darkstars.helper.Utils;
 
 import java.io.ByteArrayInputStream;
@@ -10,7 +25,7 @@ import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -29,24 +44,18 @@ public class RecieveEventService extends ChatService {
 	private ByteArrayInputStream bis;
 	private ObjectInputStream ois;
 	
-	protected void init () {
+	public void init () {
 		 buffer = new byte[65508];
 		 packet = new DatagramPacket(buffer, buffer.length );
 		 try {
-			sock = new DatagramSocket( Integer.parseInt(EVT_SRVR_PORT) );
-			sock.receive(packet);
-			bis = new ByteArrayInputStream(packet.getData());
-			ois = new ObjectInputStream(bis);
+			sock = new DatagramSocket( Integer.parseInt(getConfig().getProperty(EVT_SRVR_PORT)) );
+		
 			
 		} catch (NumberFormatException e) {
 			
 			e.printStackTrace();
 			LOGGER.fatal(e);
 		} catch (SocketException e) {
-			
-			e.printStackTrace();
-			LOGGER.fatal(e);
-		} catch (IOException e) {
 			
 			e.printStackTrace();
 			LOGGER.fatal(e);
@@ -57,29 +66,34 @@ public class RecieveEventService extends ChatService {
 		while ( !isStop() ) {
 			
 			try {
-				
+				sock.receive(packet);
+				bis = new ByteArrayInputStream(packet.getData());
+				ois = new ObjectInputStream(bis);
 				Object obj = ois.readObject();
 				if ( obj instanceof Event ) {
 					Event evt = (Event) obj;
 					User user = evt.getUser();
 					String nickName = user.getNickName();
-					HashMap<String, User> userMap = getUserMap();
-					synchronized ( userMap ) {
-						
+					Map<String, User> userMap = getUserMap();						
 						switch ( evt.getType() ) {						
-						case Online:						
-							getUserMap().put(nickName, user );
+						case Online:
+							synchronized (userMap) {
+								userMap.put(nickName, user );
+							}
 							break;
 						case Offline:
-							getUserMap().remove(nickName);
+							userMap.remove(nickName);
 							break;						
 						default:
-							LOGGER.error(evt);						
+							LOGGER.error(evt);
+							break;
 						}
 						
-					}
 					
-				}				
+					
+				}			
+				ois.close();
+				bis.close();
 				
 				
 			} catch (IOException e) {
@@ -97,8 +111,7 @@ public class RecieveEventService extends ChatService {
 	
 	public void destroy () {
 		
-		Utils.close(ois);
-		Utils.close(bis);
+		
 		sock.close();
 		
 	}

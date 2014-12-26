@@ -3,8 +3,9 @@ package in.darkstars.main;
 import in.darkstars.dto.User;
 import in.darkstars.exception.ConfigInitException;
 import in.darkstars.helper.Messages;
-import in.darkstars.presentation.UserInterface;
+import in.darkstars.presentation.UserInterfaceService;
 import in.darkstars.service.KeepAliveService;
+import in.darkstars.service.RecieveEventService;
 import in.darkstars.service.RecieveMessageService;
 import in.darkstars.service.SendMessageService;
 
@@ -14,6 +15,21 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+
+/*Copyright (c) <2014> <dis-card>.
+All rights reserved.
+
+Redistribution and use in source and binary forms are permitted
+provided that the above copyright notice and this paragraph are
+duplicated in all such forms and that any documentation,
+advertising materials, and other materials related to such
+distribution and use acknowledge that the software was developed
+by the <dis-card>. The name of the
+<dis-card> may not be used to endorse or promote products derived
+from this software without specific prior written permission.
+THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.*/
 
 /**
  * @author dis-card
@@ -62,9 +78,16 @@ public class Test {
 		Thread sender = new Thread(send, "senderThread");
 		sender.start();
 		
-		UserInterface ui = new UserInterface();
-		ui.init(confObject);
-		Thread uit = new Thread(ui,"userInterfaceThread");
+		RecieveEventService event = new RecieveEventService();
+		event.init(confObject, me);
+		Thread eventReciever = new Thread (event,"recieveEventThread");
+		eventReciever.start();
+		
+		
+		
+		UserInterfaceService ui = new UserInterfaceService();
+		ui.init(confObject, me);
+		Thread uit = new Thread(ui,"userInterface Thread");
 		uit.start();
 		/*KeepAliveService keepAlive = new KeepAliveService();
 		keepAlive.init(confObject, user);

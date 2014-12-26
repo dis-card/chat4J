@@ -1,4 +1,7 @@
-package in.darkstars.service;
+package in.darkstars.dto;
+
+import java.io.Serializable;
+
 
 /*Copyright (c) <2014> <dis-card>.
 All rights reserved.
@@ -15,13 +18,37 @@ THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.*/
 
-import in.darkstars.dto.User;
 
-import java.util.Properties;
+/**
+ * @author dis-card
+ * 
+ *         Dec 25, 2014
+ */
 
-public interface Service extends Runnable {
+public class Event implements Serializable {
+
+	private User user;
+	private static final long serialVersionUID = 140605814607823206L;
+
+	public enum Type {
+		Online, Offline, KeepAlive
+	}
+
+	public Event(User user, Type eventType) {
+
+		this.user = user;
+		this.type = eventType;
+	}
+
+	private Type type;
+
+	public User getUser() {
+		return user;
+	}
 	
-	void init ( Properties config, User user ) throws Exception;
-	void destroy () ;
+	public Type getType () {
+		return type;
+	}
+
 
 }
