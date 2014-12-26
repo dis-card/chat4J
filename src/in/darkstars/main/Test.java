@@ -4,7 +4,7 @@ import in.darkstars.dto.User;
 import in.darkstars.exception.ConfigInitException;
 import in.darkstars.helper.Messages;
 import in.darkstars.presentation.UserInterfaceService;
-import in.darkstars.service.KeepAliveService;
+import in.darkstars.service.KeepOnlineService;
 import in.darkstars.service.RecieveEventService;
 import in.darkstars.service.RecieveMessageService;
 import in.darkstars.service.SendMessageService;
@@ -83,6 +83,10 @@ public class Test {
 		Thread eventReciever = new Thread (event,"recieveEventThread");
 		eventReciever.start();
 		
+		KeepOnlineService onlineService = new KeepOnlineService();
+		onlineService.init(confObject, me);
+		Thread onlineServiceThread = new Thread( onlineService );
+		onlineServiceThread.start();
 		
 		
 		UserInterfaceService ui = new UserInterfaceService();

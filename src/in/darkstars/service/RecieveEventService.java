@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 import java.net.SocketException;
 import java.util.Map;
 
@@ -40,17 +42,19 @@ public class RecieveEventService extends ChatService {
 	private static final Logger LOGGER = Logger.getLogger(RecieveEventService.class);
 	private byte [] buffer;
 	private DatagramPacket packet;
-	private DatagramSocket sock;
+	private MulticastSocket sock;
 	private ByteArrayInputStream bis;
 	private ObjectInputStream ois;
+	private InetAddress multicastAddress;
 	
 	public void init () {
 		 buffer = new byte[65508];
 		 packet = new DatagramPacket(buffer, buffer.length );
 		 try {
-			sock = new DatagramSocket( Integer.parseInt(getConfig().getProperty(EVT_SRVR_PORT)) );
-		
-			
+			sock = new MulticastSocket( Integer.parseInt(getConfig().getProperty(EVT_SRVR_PORT)) );
+			sock.setBroadcast(true);
+			//multicastAddress = InetAddress.getByName(getConfig().getProperty(BROADCAST_ADDR));
+			//sock.joinGroup(multicastAddress);
 		} catch (NumberFormatException e) {
 			
 			e.printStackTrace();
@@ -59,6 +63,9 @@ public class RecieveEventService extends ChatService {
 			
 			e.printStackTrace();
 			LOGGER.fatal(e);
+		} catch (IOException e) {
+			
+			e.printStackTrace();
 		}
 	}
 	
@@ -77,6 +84,7 @@ public class RecieveEventService extends ChatService {
 					Map<String, User> userMap = getUserMap();						
 						switch ( evt.getType() ) {						
 						case Online:
+							System.out.println("Online Recieved");
 							synchronized (userMap) {
 								userMap.put(nickName, user );
 							}

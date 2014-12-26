@@ -30,6 +30,8 @@ public abstract class ChatService implements Service {
 	protected static final String MSG_SRVR_PORT = "msgServerPort";
 	protected static final String EVT_SRVR_PORT = "evtServerPort";
 	protected static final String KEEP_ALIVE = "keepAlive";	
+	protected static final String BROADCAST_ADDR = "broadcastAddress";
+	protected static final int MAX_SIZE = 60000;
 	
 	
 	
