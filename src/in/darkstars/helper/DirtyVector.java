@@ -44,6 +44,10 @@ public class DirtyVector <T> extends Vector<T> {
 		return dirty;
 	}	
 	
+	public void setDirty ( boolean dirty ) {
+		this.dirty = dirty;
+	}
+	
 	public T get( int index ) {
 		dirty  = false;
 		return super.get(index);

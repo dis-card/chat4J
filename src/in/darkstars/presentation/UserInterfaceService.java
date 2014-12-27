@@ -21,10 +21,10 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.*/
  * Dec 25, 2014
  */
 import in.darkstars.dto.User;
+import in.darkstars.helper.DirtyVector;
 import in.darkstars.service.ChatService;
 
 import java.awt.Dimension;
-import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBoxMenuItem;
@@ -58,7 +58,7 @@ public class UserInterfaceService extends ChatService {
 	
 	private int height;
 	private int width;
-	public static final String title="chat4J";
+	public static final String TITLE="chat4J";
 	private String WIDTH = "width";
 	private String HEIGHT = "height";
 	
@@ -66,7 +66,7 @@ public class UserInterfaceService extends ChatService {
 		
 		height = Integer.parseInt(getConfig().getProperty(HEIGHT) );
 		width = Integer.parseInt(getConfig().getProperty(WIDTH));
-		frame = new JFrame(title);
+		frame = new JFrame(TITLE);
 		frame.setPreferredSize(new Dimension(width, height) );
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -119,14 +119,19 @@ public class UserInterfaceService extends ChatService {
 		
 		while ( !isStop() ) {
 			
-			List<User> users = getUserList();
-			if ( ((DirtyVector<User>)users).isDirty() ) {
+			DirtyVector<User> chatUsersList = (DirtyVector<User>) getUserList();
+			DefaultListModel<User> modelUserList = (DefaultListModel<User>) userList.getModel();
+			if ( chatUsersList.isDirty() ) {
 				
-				((DefaultListModel<User>)userList.getModel()).removeAllElements();
-				for ( User user : users ) {
+				
+				for ( User user : chatUsersList ) {
 					
-					((DefaultListModel<User>)userList.getModel()).addElement((user));
+					modelUserList.addElement((user));
+					
+					
+					
 				}
+				chatUsersList.setDirty(false);
 				
 				
 			}
