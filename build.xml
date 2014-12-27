@@ -65,11 +65,14 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.-->
 	</target>
 	
 	
-	<manifestclasspath property="jar.classpath" jarfile="${dist}/${jarName}">
-		<classpath refid="build.classpath" />
-	</manifestclasspath>
-
+	
 	<target name="jar" depends="compile">
+		
+		<manifestclasspath property="jar.classpath" jarfile="${dist}/${jarName}" >
+					<classpath refid="build.classpath" />
+				</manifestclasspath>
+
+
 		<jar destfile="${dist}/${jarName}" basedir="${build}">
 			<manifest>
 				<attribute name="Main-Class" value="in.darkstars.main.Test" />
@@ -77,7 +80,6 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.-->
 			</manifest>
 
 		</jar>
-
 
 
 		<copy todir="${dist}/lib">
@@ -88,12 +90,9 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.-->
 			<fileset dir="${config}" />
 		</copy>
 		
-		<copy todir="${dist}/run">
-			<fileset dir="${run}" />
-		</copy>
 	</target>
 
-
+	
 
 
 </project>
