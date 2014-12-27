@@ -1,6 +1,6 @@
 package in.darkstars.helper;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 /*Copyright (c) <2014> <dis-card>.
 All rights reserved.
@@ -23,7 +23,7 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.*/
  * Dec 27, 2014
  */
 
-public class DirtyArrayList<T> extends ArrayList<T> {
+public class DirtyVector <T> extends Vector<T> {
 	
 	private boolean dirty;
 	

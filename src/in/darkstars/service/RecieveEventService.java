@@ -17,18 +17,15 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.*/
 
 import in.darkstars.dto.Event;
 import in.darkstars.dto.User;
-import in.darkstars.helper.Utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.SocketException;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -87,19 +84,15 @@ public class RecieveEventService extends ChatService {
 						case Online:
 							
 							if ( !userList.contains(user) ){								
-								synchronized (userList) {
 									userList.add( user );
 									System.out.println("Added "+user.getNickName());
-								}								
 							}
 							
 							break;
 						case Offline:
 							if ( userList.contains(user) ) {
-								synchronized (userList) {
 									userList.remove( user );
 									System.out.println("Removed "+user.getNickName());
-								}
 							}							
 							break;						
 						default:

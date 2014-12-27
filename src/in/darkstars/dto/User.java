@@ -58,5 +58,16 @@ public class User implements Serializable {
 		return this.nickName;
 	}
 	
+	public boolean equals ( Object obj ) {
+		boolean equal = false;
+		if ( obj instanceof User && ((User)obj).getNickName().equals(nickName) && ((User)obj).getIpAddress().equals(ipAddress) ) {
+			equal = true;
+		}
+		return equal;
+		
+	}
+	
+	
+	
 
 }

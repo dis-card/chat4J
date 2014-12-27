@@ -21,12 +21,10 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.*/
  * Dec 25, 2014
  */
 import in.darkstars.dto.User;
-import in.darkstars.helper.DirtyArrayList;
 import in.darkstars.service.ChatService;
 
 import java.awt.Dimension;
 import java.util.List;
-import java.util.Properties;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBoxMenuItem;
@@ -35,20 +33,15 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JTree;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListDataListener;
-import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
+
+import org.apache.log4j.Logger;
+
+import in.darkstars.helper.DirtyVector;
 
 public class UserInterfaceService extends ChatService {
 	
-	
+	private static final Logger LOGGER = Logger.getLogger(UserInterfaceService.class);
 	private JFrame frame;
 	private JMenuBar menuBar;
 	private JMenu file;
@@ -123,17 +116,35 @@ public class UserInterfaceService extends ChatService {
 		return menuBar;
 	}
 	public void run () {
-		List<User> users = getUserList();
-		if ( ((DirtyArrayList<User>)users).isDirty() ) {
+		
+		while ( !isStop() ) {
 			
-			((DefaultListModel<User>)userList.getModel()).removeAllElements();
-			for ( User user : users ) {
+			List<User> users = getUserList();
+			if ( ((DirtyVector<User>)users).isDirty() ) {
 				
-				((DefaultListModel<User>)userList.getModel()).addElement((user));
+				((DefaultListModel<User>)userList.getModel()).removeAllElements();
+				for ( User user : users ) {
+					
+					((DefaultListModel<User>)userList.getModel()).addElement((user));
+				}
+				
+				
 			}
 			
+			try {
+				Thread.sleep(Integer.parseInt(getConfig().getProperty(KEEP_ALIVE)) );
+			} catch (NumberFormatException e) {
+				
+				e.printStackTrace();
+				LOGGER.fatal(e);
+			} catch (InterruptedException e) {
+				
+				e.printStackTrace();
+				LOGGER.fatal(e);
+			}
 			
 		}
+		
 		
 	}
 	

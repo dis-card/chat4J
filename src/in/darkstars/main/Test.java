@@ -67,7 +67,7 @@ public class Test {
 		}
 		RecieveMessageService recieve = new RecieveMessageService();
 		User me = new User ();
-		//me.setIpAddress("192.168.1.13");
+		me.setIpAddress("192.168.1.13");
 		me.setNickName((String)confObject.getProperty("userName"));
 		me.setStatus(User.Status.Available);
 		recieve.init(confObject, me);
