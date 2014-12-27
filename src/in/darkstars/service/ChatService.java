@@ -16,17 +16,21 @@ IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.*/
 
 import in.darkstars.dto.User;
+import in.darkstars.helper.DirtyArrayList;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
+import java.util.Vector;
 
 public abstract class ChatService implements Service {
 
 	private boolean stop = false;
 	private Properties config;
 	private User me;
-	private static Map<String, User > userMap = new TreeMap<String, User>();
+	private static List<User > userList = new DirtyArrayList<User>();
 	protected static final String MSG_SRVR_PORT = "msgServerPort";
 	protected static final String EVT_SRVR_PORT = "evtServerPort";
 	protected static final String KEEP_ALIVE = "keepAlive";	
@@ -46,8 +50,8 @@ public abstract class ChatService implements Service {
 		
 	
 
-	public Map<String, User> getUserMap() {
-		return userMap;
+	public List< User> getUserList() {
+		return userList;
 	}	
 
 	protected Properties getConfig() {

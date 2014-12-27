@@ -1,6 +1,6 @@
-package in.darkstars.dto;
+package in.darkstars.helper;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 
 /*Copyright (c) <2014> <dis-card>.
 All rights reserved.
@@ -17,46 +17,37 @@ THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.*/
 
-
 /**
  * @author dis-card
  *
+ * Dec 27, 2014
  */
-public class User implements Serializable {
-	
-	private String nickName;
-	private String ipAddress;
-	public enum	Status {
-		Available,
-		Offline,
-		Busy,
-		Away
-	}
-	private Status status;
-	
-	
-	public String getNickName() {
-		return nickName;
-	}
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-	public String getIpAddress() {
-		return ipAddress;
-	}
-	public void setIpAddress(String ipAddress) {
-		this.ipAddress = ipAddress;
-	}
-	public Status getStatus() {
-		return status;
-	}
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-	
-	public String toString () {
-		return this.nickName;
-	}
-	
 
+public class DirtyArrayList<T> extends ArrayList<T> {
+	
+	private boolean dirty;
+	
+	public boolean add ( Object obj ) {		
+		
+		dirty = true;
+		return super.add((T) obj);	
+		
+	}
+	
+	public void add ( int index, Object obj ) {
+		dirty = true;
+		 super.add ( index, (T) obj );
+	}
+
+	
+	public boolean isDirty() {
+		return dirty;
+	}	
+	
+	public T get( int index ) {
+		dirty  = false;
+		return super.get(index);
+	}
+
+	
 }

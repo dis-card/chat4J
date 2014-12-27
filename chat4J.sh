@@ -1,1 +1,1 @@
-java -jar ../chat4J.jar
+java -jar ./chat4J.jar

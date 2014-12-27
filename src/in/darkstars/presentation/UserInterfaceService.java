@@ -20,17 +20,25 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.*/
  *
  * Dec 25, 2014
  */
+import in.darkstars.dto.User;
+import in.darkstars.helper.DirtyArrayList;
 import in.darkstars.service.ChatService;
 
 import java.awt.Dimension;
+import java.util.List;
 import java.util.Properties;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTree;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -53,7 +61,7 @@ public class UserInterfaceService extends ChatService {
 	private JMenuItem license;
 	private JCheckBoxMenuItem secure;
 	
-	private JTree userTree;
+	private JList<User> userList;
 	
 	private int height;
 	private int width;
@@ -72,17 +80,18 @@ public class UserInterfaceService extends ChatService {
 		frame.setLocationRelativeTo(null);
 		
 		frame.setJMenuBar( initMenuBar());
-		frame.add(initTree());
+		frame.add(initUserList());
 		frame.pack();
 		frame.setVisible(true);
 		
 	}
 	
-	private JTree initTree () {
-		userTree = new JTree();
-		userTree.setModel( new UserTreeModel());
-		userTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		return userTree;
+	private JList initUserList () {
+		userList = new JList<User>();
+		userList.setModel(new DefaultListModel<User>()  );
+		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		return userList;
 	}
 	
 	private JMenuBar initMenuBar () {
@@ -114,78 +123,24 @@ public class UserInterfaceService extends ChatService {
 		return menuBar;
 	}
 	public void run () {
-		//init();
+		List<User> users = getUserList();
+		if ( ((DirtyArrayList<User>)users).isDirty() ) {
+			
+			((DefaultListModel<User>)userList.getModel()).removeAllElements();
+			for ( User user : users ) {
+				
+				((DefaultListModel<User>)userList.getModel()).addElement((user));
+			}
+			
+			
+		}
+		
 	}
 	
 	public void destroy () {
 		frame.dispose();
 	}
 	
-	class TreeListener implements TreeSelectionListener {
-
-
-		public void valueChanged(TreeSelectionEvent e) {
-			System.out.println("Changed");
-			
-		}
-	
-		
-	}
-	
-	
-	
-	class UserTreeModel implements TreeModel {
-
-		
-	
-		public Object getRoot() {
-			
-			return getUserMap();
-		}
-
-
-		public Object getChild(Object parent, int index) {
-
-			return null;
-		}
-
-
-		public int getChildCount(Object parent) {
-			return 0;
-		}
-
-
-		public boolean isLeaf(Object node) {
-
-			return true;
-		}
-
-
-		public void valueForPathChanged(TreePath path, Object newValue) {
-
-			
-		}
-
-
-		public int getIndexOfChild(Object parent, Object child) {
-
-			return 0;
-		}
-
-
-		public void addTreeModelListener(TreeModelListener l) {
-
-			
-		}
-
-
-		public void removeTreeModelListener(TreeModelListener l) {
-
-			
-		}
-		
-	}
-
 	
 
 }

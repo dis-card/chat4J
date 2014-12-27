@@ -27,6 +27,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.SocketException;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -81,16 +82,25 @@ public class RecieveEventService extends ChatService {
 					Event evt = (Event) obj;
 					User user = evt.getUser();
 					String nickName = user.getNickName();
-					Map<String, User> userMap = getUserMap();						
+					List<User> userList = getUserList();						
 						switch ( evt.getType() ) {						
 						case Online:
-							System.out.println("Online Recieved");
-							synchronized (userMap) {
-								userMap.put(nickName, user );
+							
+							if ( !userList.contains(user) ){								
+								synchronized (userList) {
+									userList.add( user );
+									System.out.println("Added "+user.getNickName());
+								}								
 							}
+							
 							break;
 						case Offline:
-							userMap.remove(nickName);
+							if ( userList.contains(user) ) {
+								synchronized (userList) {
+									userList.remove( user );
+									System.out.println("Removed "+user.getNickName());
+								}
+							}							
 							break;						
 						default:
 							LOGGER.error(evt);
