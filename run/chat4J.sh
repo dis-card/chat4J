@@ -1,0 +1,1 @@
+java -jar ../chat4J.jar

@@ -32,8 +32,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTree;
 import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 public class UserInterfaceService extends ChatService {
 	
@@ -78,6 +81,7 @@ public class UserInterfaceService extends ChatService {
 	private JTree initTree () {
 		userTree = new JTree();
 		userTree.setModel( new UserTreeModel());
+		userTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		return userTree;
 	}
 	
@@ -116,6 +120,19 @@ public class UserInterfaceService extends ChatService {
 	public void destroy () {
 		frame.dispose();
 	}
+	
+	class TreeListener implements TreeSelectionListener {
+
+
+		public void valueChanged(TreeSelectionEvent e) {
+			System.out.println("Changed");
+			
+		}
+	
+		
+	}
+	
+	
 	
 	class UserTreeModel implements TreeModel {
 

@@ -26,7 +26,7 @@ public abstract class ChatService implements Service {
 	private boolean stop = false;
 	private Properties config;
 	private User me;
-	private Map<String, User > userMap;
+	private static Map<String, User > userMap = new TreeMap<String, User>();
 	protected static final String MSG_SRVR_PORT = "msgServerPort";
 	protected static final String EVT_SRVR_PORT = "evtServerPort";
 	protected static final String KEEP_ALIVE = "keepAlive";	
@@ -38,7 +38,7 @@ public abstract class ChatService implements Service {
 	public void init ( Properties config, User me ) {
 		this.config = config;
 		this.me = me;
-		this.userMap = new TreeMap<String, User> ();
+	//	this.userMap = new TreeMap<String, User> ();
 		init();
 	}
 	
