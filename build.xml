@@ -28,6 +28,7 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.-->
 	<property name="lib" location="lib" />
 	<property name="run" location="run" />
 	<property name="config" location="config" />
+	<property name="icon" location="icon" />
 
 	<property name="jarName" value="chat4J.jar" />
 
@@ -88,6 +89,10 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.-->
 
 		<copy todir="${dist}/config">
 			<fileset dir="${config}" />
+		</copy>
+		
+		<copy todir="${dist}/icon">
+			<fileset dir="${icon}" />
 		</copy>
 		
 	</target>

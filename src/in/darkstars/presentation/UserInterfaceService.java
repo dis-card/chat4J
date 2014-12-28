@@ -27,6 +27,7 @@ import in.darkstars.helper.DirtyVector;
 import in.darkstars.service.ChatService;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,14 +37,18 @@ import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextPane;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -84,6 +89,10 @@ public class UserInterfaceService extends ChatService {
 	private JRadioButtonMenuItem away;
 	private ButtonGroup statusBtnGrp;
 	
+	private ImageIcon availableIcon = new ImageIcon("icon/available.png");
+	private ImageIcon busyIcon = new ImageIcon("icon/busy.png");
+	private ImageIcon awayIcon = new ImageIcon("icon/away.png");
+	
 	public void init ( ) {
 		
 		lineBorder = BorderFactory.createLineBorder(Color.black);
@@ -113,6 +122,7 @@ public class UserInterfaceService extends ChatService {
 		userList.setBounds(0, 0, 100, 400);
 		userList.setModel(new DefaultListModel<User>()  );
 		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		userList.setCellRenderer(new ListEntryCellRenderer());
 		return userList;
 	}
 	
@@ -275,6 +285,46 @@ public class UserInterfaceService extends ChatService {
 	}
 
 
+	class ListEntryCellRenderer	 extends JLabel implements ListCellRenderer
+	{
+	   private JLabel label;
+	  
+	   public Component getListCellRendererComponent(JList list, Object value,
+	                                                 int index, boolean isSelected,
+	                                                 boolean cellHasFocus) {
+	      User user = (User) value;	  
+	      setText(user.toString());
+	      switch ( user.getStatus() ) {
+	      case Online:
+	    	  setIcon(availableIcon);
+	    	  break;
+	      case Busy:
+	    	  setIcon(busyIcon);
+	    	  break;
+	      case Away:
+	    	  setIcon(awayIcon);
+	    	  break;
+	      default:
+	    	  LOGGER.error("Unkown "+user.getStatus());
+	    	   break;
+	      }	      
+	   
+	      /*if (isSelected) {
+	         setBackground(list.getSelectionBackground());
+	         setForeground(list.getSelectionForeground());
+	      }
+	      else {
+	         setBackground(list.getBackground());
+	         setForeground(list.getForeground());
+	      }
+	  
+	      setEnabled(list.isEnabled());
+	      setFont(list.getFont());
+	      setOpaque(true);
+	  */
+	      return this;
+	   }
+	}
 	
 	
 

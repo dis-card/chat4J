@@ -62,7 +62,7 @@ public class User implements Serializable {
 	}
 	
 	public String toString () {
-		return this.nickName+status.toString();
+		return this.nickName;
 	}
 	
 	public boolean equals ( Object obj ) {

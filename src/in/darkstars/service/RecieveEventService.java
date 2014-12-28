@@ -85,13 +85,40 @@ public class RecieveEventService extends ChatService {
 						LOGGER.debug(user.getStatus()+" recieved from "+ user.getNickName());
 						
 						// If the user is not in the list or his status changed then only we process the event. 
-						if ( !userList.contains(user) || ( userList.contains(user) && isStatusChanged(user) ) ) {
+					
+						if ( !userList.contains(user) ) {
+							userList.add( user );
+							System.out.println("Added "+user.getNickName());
+						} else if ( isStatusChanged(user) ) {
+							
+							int index = userList.indexOf( user );
+							switch ( evt.getType() ) {
+							case Offline:
+								break;
+							case Online:
+							case Busy:
+							case Away:
+								userList.set(index, user);
+								break;
+							default:
+								LOGGER.error(evt.getType());
+								break;
+							
+							}
+												
+							
+						}
+					/*	if ( !userList.contains(user) || ( userList.contains(user) && isStatusChanged(user) ) ) {
 							
 							switch ( evt.getType() ) {						
-							case Online:								
-								if ( !userList.contains(user) ){								
-										userList.add( user );
-										System.out.println("Added "+user.getNickName());
+							case Online:
+								// if the user is not in the list, or if he is in the list but it's status changed.
+								if ( userList.contains(user) ) {
+									int index = userList.indexOf( user );
+									userList.set(index, user);									
+								} else {
+									userList.add( user );
+									System.out.println("Added "+user.getNickName());
 								}
 								
 								break;
@@ -102,6 +129,17 @@ public class RecieveEventService extends ChatService {
 								}							
 								break;						
 							case Busy :
+								if ( userList.contains(user) ) {
+									int index = userList.indexOf(user);
+									User chatUser = (User)userList.get(index);
+									chatUser.setStatus(user.getStatus());
+									userList.set(index, chatUser);
+									System.out.println("Status changed for "+chatUser.getNickName()+" to "+chatUser.getStatus());
+							} else {
+								userList.add( user );
+								System.out.println("Added from busy "+user.getNickName());
+							}
+								break;
 							case Away :								
 								if ( userList.contains(user) ) {
 										int index = userList.indexOf(user);
@@ -111,14 +149,14 @@ public class RecieveEventService extends ChatService {
 										System.out.println("Status changed for "+chatUser.getNickName()+" to "+chatUser.getStatus());
 								} else {
 									userList.add( user );
-									System.out.println("Added from busy or away "+user.getNickName());
+									System.out.println("Added from away "+user.getNickName());
 								}
 								break;
 							default:
 								LOGGER.error(evt);
 								break;
 							}							
-						}
+						}*/
 												
 					}
 					

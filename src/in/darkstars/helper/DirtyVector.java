@@ -27,16 +27,18 @@ public class DirtyVector <T> extends Vector<T> {
 	
 	private boolean dirty;
 	
-	public boolean add ( Object obj ) {		
+	@Override
+	public boolean add ( T element ) {		
 		
 		dirty = true;
-		return super.add((T) obj);	
+		return super.add(element);	
 		
 	}
 	
-	public void add ( int index, Object obj ) {
+	@Override
+	public void add ( int index, T element ) {
 		dirty = true;
-		 super.add ( index, (T) obj );
+		 super.add ( index, element );
 	}
 
 	
@@ -46,12 +48,9 @@ public class DirtyVector <T> extends Vector<T> {
 	
 	public void setDirty ( boolean dirty ) {
 		this.dirty = dirty;
-	}
+	}	
 	
-	public T get( int index ) {
-		return super.get(index);
-	}
-	
+	@Override
 	public boolean remove ( Object obj ) {
 		dirty = true;
 		return super.remove(obj);
