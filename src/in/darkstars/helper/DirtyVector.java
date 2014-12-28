@@ -52,6 +52,12 @@ public class DirtyVector <T> extends Vector<T> {
 		dirty  = false;
 		return super.get(index);
 	}
+	
+	public boolean remove ( Object obj ) {
+		dirty = true;
+		return super.remove(obj);
+		
+	}
 
 	
 }

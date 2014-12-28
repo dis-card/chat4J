@@ -31,6 +31,9 @@ public abstract class ChatService implements Service {
 	protected static final String EVT_SRVR_PORT = "evtServerPort";
 	protected static final String KEEP_ALIVE = "keepAlive";	
 	protected static final String BROADCAST_ADDR = "broadcastAddress";
+	protected static final String USER_RFRSH_RATE = "uiRefreshRate";
+	protected static final String PACKET_BURST_RATE = "packetBurstRate";
+	protected static final String PACKET_BURST_INTERVAL = "packetBurstInterval";
 	protected static final int MAX_SIZE = 60000;
 	
 	

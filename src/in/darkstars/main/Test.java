@@ -1,12 +1,12 @@
 package in.darkstars.main;
 
 import in.darkstars.dto.User;
-import in.darkstars.exception.ConfigInitException;
+import in.darkstars.event.StatusChangeEvent;
 import in.darkstars.helper.Messages;
 import in.darkstars.presentation.UserInterfaceService;
-import in.darkstars.service.KeepOnlineService;
 import in.darkstars.service.RecieveEventService;
 import in.darkstars.service.RecieveMessageService;
+import in.darkstars.service.SendEventService;
 import in.darkstars.service.SendMessageService;
 
 import java.io.FileInputStream;
@@ -43,8 +43,7 @@ public class Test {
 	public static String CONF_FILE="config/conf.properties";
 	private static Properties confObject;
 	
-	public static void main(String args[]) throws ConfigInitException,
-			IOException {
+	public static void main(String args[]) {
 		try {
 
 			LOGGER.info(Messages.CONFIG_LOAD);
@@ -68,8 +67,8 @@ public class Test {
 		RecieveMessageService recieve = new RecieveMessageService();
 		User me = new User ();
 		me.setIpAddress("192.168.1.13");
-		me.setNickName(confObject.getProperty("userName"));
-		me.setStatus(User.Status.Available);
+		me.setNickName(confObject.getProperty("nickName"));
+		me.setStatus(User.Status.Online);
 		recieve.init(confObject, me);
 		Thread reciever = new Thread(recieve, "recieverThread");
 		reciever.start();
@@ -83,16 +82,20 @@ public class Test {
 		Thread eventReciever = new Thread (event,"recieveEventThread");
 		eventReciever.start();
 		
-		KeepOnlineService onlineService = new KeepOnlineService();
-		onlineService.init(confObject, me);
-		Thread onlineServiceThread = new Thread( onlineService, "keepOnlineService" );
-		onlineServiceThread.start();
-		
+		SendEventService sendEventService = new SendEventService();
+		sendEventService.init(confObject, me);
+		me.addStatusChangeListener(sendEventService);
+		Thread sendEventThread  = new Thread ( sendEventService,"sendEventThread");
+		sendEventThread.start();
+	
 		
 		UserInterfaceService ui = new UserInterfaceService();
 		ui.init(confObject, me);
 		Thread uit = new Thread(ui,"userInterface Thread");
 		uit.start();
+		me.setStatus(User.Status.Online);
+		
+	
 		/*KeepAliveService keepAlive = new KeepAliveService();
 		keepAlive.init(confObject, user);
 		Thread keepAliver = new Thread(send, "keepAliverThread");

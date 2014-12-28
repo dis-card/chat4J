@@ -78,29 +78,33 @@ public class RecieveEventService extends ChatService {
 				if ( obj instanceof Event ) {
 					Event evt = (Event) obj;
 					User user = evt.getUser();
-					String nickName = user.getNickName();
-					List<User> userList = getUserList();						
-						switch ( evt.getType() ) {						
-						case Online:
-							
-							if ( !userList.contains(user) ){								
-									userList.add( user );
-									System.out.println("Added "+user.getNickName());
-							}
-							
-							break;
-						case Offline:
-							if ( userList.contains(user) ) {
-									userList.remove( user );
-									System.out.println("Removed "+user.getNickName());
-							}							
-							break;						
-						default:
-							LOGGER.error(evt);
-							break;
-						}
+					if ( !user.equals(getUser()) ) {
 						
-					
+						String nickName = user.getNickName();
+						List<User> userList = getUserList();						
+							switch ( evt.getType() ) {						
+							case Online:
+								
+								if ( !userList.contains(user) ){								
+										userList.add( user );
+										System.out.println("Added "+user.getNickName());
+								}
+								
+								break;
+							case Offline:
+								LOGGER.debug("Offline recieved");
+								if ( userList.contains(user) ) {
+										userList.remove( user );
+										System.out.println("Removed "+user.getNickName());
+								}							
+								break;						
+							default:
+								LOGGER.error(evt);
+								break;
+							}
+
+						
+					}
 					
 				}			
 				ois.close();

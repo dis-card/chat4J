@@ -20,11 +20,15 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.*/
  *
  * Dec 25, 2014
  */
+import in.darkstars.dto.Event;
 import in.darkstars.dto.User;
+import in.darkstars.dto.User.Status;
 import in.darkstars.helper.DirtyVector;
 import in.darkstars.service.ChatService;
 
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBoxMenuItem;
@@ -71,6 +75,7 @@ public class UserInterfaceService extends ChatService {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
+		frame.addWindowListener( new Chat4JWindowListener());
 		
 		frame.setJMenuBar( initMenuBar());
 		frame.add(initUserList());
@@ -123,7 +128,7 @@ public class UserInterfaceService extends ChatService {
 			DefaultListModel<User> modelUserList = (DefaultListModel<User>) userList.getModel();
 			if ( chatUsersList.isDirty() ) {
 				
-				
+				modelUserList.removeAllElements();
 				for ( User user : chatUsersList ) {
 					
 					modelUserList.addElement((user));
@@ -137,7 +142,7 @@ public class UserInterfaceService extends ChatService {
 			}
 			
 			try {
-				Thread.sleep(Integer.parseInt(getConfig().getProperty(KEEP_ALIVE)) );
+				Thread.sleep(Integer.parseInt(getConfig().getProperty(USER_RFRSH_RATE)) );
 			} catch (NumberFormatException e) {
 				
 				e.printStackTrace();
@@ -156,6 +161,25 @@ public class UserInterfaceService extends ChatService {
 	public void destroy () {
 		frame.dispose();
 	}
+	
+	public void initListeners () {
+		
+		frame.addWindowListener( new Chat4JWindowListener() );
+		   
+		
+	}
+	
+	class Chat4JWindowListener extends WindowAdapter {
+		
+	    public void windowClosing(WindowEvent windowEvent) {
+	    	User me = getUser();
+    		me.setStatus(Status.Offline);
+            super.windowClosing(windowEvent);
+        }
+    
+
+	}
+		
 	
 	
 

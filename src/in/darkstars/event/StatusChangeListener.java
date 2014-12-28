@@ -1,9 +1,7 @@
-package in.darkstars.dto;
-
-import in.darkstars.dto.User.Status;
+package in.darkstars.event;
 
 import java.io.Serializable;
-
+import java.util.EventListener;
 
 /*Copyright (c) <2014> <dis-card>.
 All rights reserved.
@@ -20,47 +18,14 @@ THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.*/
 
-
 /**
  * @author dis-card
- * 
- *         Dec 25, 2014
+ *
+ * Dec 28, 2014
  */
 
-public class Event implements Serializable {
-
-	private User user;
-	private Status type;
+public interface StatusChangeListener extends EventListener, Serializable {
 	
-	public Event(User user, Status type) {
-
-		this.user = user;
-		this.type = type;
-	}
-	
-	public Event() {
-		
-	}
-
-	
-
-	public User getUser() {
-		return user;
-	}
-	
-	public Status getType () {
-		return type;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public void setType(Status type) {
-		this.type = type;
-	}
-	
-	
-
+	void statusChangeEventOccurred ( StatusChangeEvent evt ) ;
 
 }

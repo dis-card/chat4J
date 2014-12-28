@@ -1,6 +1,11 @@
 package in.darkstars.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import in.darkstars.event.StatusChangeEvent;
+import in.darkstars.event.StatusChangeListener;
 
 /*Copyright (c) <2014> <dis-card>.
 All rights reserved.
@@ -27,12 +32,13 @@ public class User implements Serializable {
 	private String nickName;
 	private String ipAddress;
 	public enum	Status {
-		Available,
+		Online,
 		Offline,
 		Busy,
 		Away
 	}
 	private Status status;
+	private transient List <StatusChangeListener> stateChangeListenerList = new ArrayList<StatusChangeListener>();	
 	
 	
 	public String getNickName() {
@@ -52,6 +58,7 @@ public class User implements Serializable {
 	}
 	public void setStatus(Status status) {
 		this.status = status;
+		this.fireStatusChangeEvent();
 	}
 	
 	public String toString () {
@@ -67,6 +74,25 @@ public class User implements Serializable {
 		
 	}
 	
+	public void addStatusChangeListener ( StatusChangeListener listener ) {
+		if ( !stateChangeListenerList.contains(listener)) {
+			stateChangeListenerList.add(listener);
+		}		
+		
+	}
+	
+	public void removeStatusChangeListener ( StatusChangeListener listener ) {
+		if ( !stateChangeListenerList.contains(listener)) {
+			stateChangeListenerList.add(listener);
+		}
+	}
+	
+	private void fireStatusChangeEvent () {
+		StatusChangeEvent evt = new StatusChangeEvent(this);
+		for (StatusChangeListener listener : stateChangeListenerList ) {
+			listener.statusChangeEventOccurred(evt);
+		}
+	}
 	
 	
 
