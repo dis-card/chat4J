@@ -88,12 +88,14 @@ public class RecieveEventService extends ChatService {
 					
 						if ( !userList.contains(user) ) {
 							userList.add( user );
-							System.out.println("Added "+user.getNickName());
+							System.out.println("Added "+user.getNickName()+" as "+user.getStatus());
 						} else if ( isStatusChanged(user) ) {
 							
 							int index = userList.indexOf( user );
 							switch ( evt.getType() ) {
 							case Offline:
+								userList.remove( user );
+								System.out.println("Removed "+user.getNickName());
 								break;
 							case Online:
 							case Busy:
