@@ -32,6 +32,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -39,6 +40,7 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
@@ -74,6 +76,11 @@ public class UserInterfaceService extends ChatService {
 	private JTextPane inputWindow;
 	private Border lineBorder;
 	private Border etchedBorder;
+	private JMenu status;
+	private JRadioButtonMenuItem available;
+	private JRadioButtonMenuItem busy;
+	private JRadioButtonMenuItem away;
+	private ButtonGroup statusBtnGrp;
 	
 	public void init ( ) {
 		
@@ -130,10 +137,19 @@ public class UserInterfaceService extends ChatService {
 		menuBar = new JMenuBar();
 		
 		file = new JMenu("File");
+		status = new JMenu ("Status");
 		settings = new JMenu("Settings");
 		help = new JMenu("Help");
 		
 		exit = new JMenuItem("Exit");
+		statusBtnGrp = new ButtonGroup();
+		available = new JRadioButtonMenuItem("Available");
+		busy = new JRadioButtonMenuItem("Busy");
+		away = new JRadioButtonMenuItem("Away");
+		statusBtnGrp.add(available);
+		statusBtnGrp.add(busy);
+		statusBtnGrp.add(away);
+		
 		about = new JMenuItem("About");
 		manual = new JMenuItem("Manual");
 		license = new JMenuItem("Lincense");
@@ -142,12 +158,16 @@ public class UserInterfaceService extends ChatService {
 		
 		
 		file.add(exit);
+		status.add(available);
+		status.add(busy);
+		status.add(away);
 		settings.add(secure);
 		help.add(about);
 		help.add(manual);
 		help.add(license);
 		
 		menuBar.add(file);
+		menuBar.add(status);
 		menuBar.add(settings);
 		menuBar.add(help);
 		
