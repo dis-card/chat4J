@@ -20,7 +20,6 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.*/
  *
  * Dec 25, 2014
  */
-import in.darkstars.dto.Event;
 import in.darkstars.dto.User;
 import in.darkstars.dto.User.Status;
 import in.darkstars.helper.DirtyVector;
@@ -37,7 +36,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -54,8 +52,6 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
 import org.apache.log4j.Logger;
-
-import in.darkstars.helper.DirtyVector;
 
 public class UserInterfaceService extends ChatService {
 	

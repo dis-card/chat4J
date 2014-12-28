@@ -1,7 +1,6 @@
 package in.darkstars.main;
 
 import in.darkstars.dto.User;
-import in.darkstars.event.StatusChangeEvent;
 import in.darkstars.helper.Messages;
 import in.darkstars.presentation.UserInterfaceService;
 import in.darkstars.service.RecieveEventService;

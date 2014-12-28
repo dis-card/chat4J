@@ -1,11 +1,11 @@
 package in.darkstars.dto;
 
+import in.darkstars.event.StatusChangeEvent;
+import in.darkstars.event.StatusChangeListener;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import in.darkstars.event.StatusChangeEvent;
-import in.darkstars.event.StatusChangeListener;
 
 /*Copyright (c) <2014> <dis-card>.
 All rights reserved.
