@@ -49,13 +49,18 @@ public class DirtyVector <T> extends Vector<T> {
 	}
 	
 	public T get( int index ) {
-		dirty  = false;
 		return super.get(index);
 	}
 	
 	public boolean remove ( Object obj ) {
 		dirty = true;
 		return super.remove(obj);
+		
+	}
+	
+	public T set ( int index, T element ) {
+		dirty = true;
+		return super.set(index, element);
 		
 	}
 

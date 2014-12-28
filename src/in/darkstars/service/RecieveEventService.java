@@ -82,28 +82,44 @@ public class RecieveEventService extends ChatService {
 						
 						String nickName = user.getNickName();
 						List<User> userList = getUserList();						
+						LOGGER.debug(user.getStatus()+" recieved from "+ user.getNickName());
+						
+						// If the user is not in the list or his status changed then only we process the event. 
+						if ( !userList.contains(user) || ( userList.contains(user) && isStatusChanged(user) ) ) {
+							
 							switch ( evt.getType() ) {						
-							case Online:
-								
+							case Online:								
 								if ( !userList.contains(user) ){								
 										userList.add( user );
 										System.out.println("Added "+user.getNickName());
 								}
 								
 								break;
-							case Offline:
-								LOGGER.debug("Offline recieved");
+							case Offline:								
 								if ( userList.contains(user) ) {
 										userList.remove( user );
 										System.out.println("Removed "+user.getNickName());
 								}							
 								break;						
+							case Busy :
+							case Away :								
+								if ( userList.contains(user) ) {
+										int index = userList.indexOf(user);
+										User chatUser = (User)userList.get(index);
+										chatUser.setStatus(user.getStatus());
+										userList.set(index, chatUser);
+										System.out.println("Status changed for "+chatUser.getNickName()+" to "+chatUser.getStatus());
+								} else {
+									userList.add( user );
+									System.out.println("Added from busy or away "+user.getNickName());
+								}
+								break;
 							default:
 								LOGGER.error(evt);
 								break;
-							}
-
-						
+							}							
+						}
+												
 					}
 					
 				}			
@@ -124,6 +140,23 @@ public class RecieveEventService extends ChatService {
 		
 	}
 	
+	private boolean isStatusChanged(User user) {
+		
+		boolean statusChanged = false;
+		
+		if ( user.getStatus() != getUserFromList(user).getStatus() ) {
+			statusChanged = true;
+		}
+		return statusChanged;
+	}
+	
+	private User getUserFromList ( User user ) {
+		
+		int index = getUserList().indexOf(user);
+		User chatUser = (User)getUserList().get(index);
+		return chatUser;
+	}
+
 	public void destroy () {
 		
 		

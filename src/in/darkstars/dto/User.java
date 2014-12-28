@@ -62,7 +62,7 @@ public class User implements Serializable {
 	}
 	
 	public String toString () {
-		return this.nickName;
+		return this.nickName+status.toString();
 	}
 	
 	public boolean equals ( Object obj ) {
@@ -89,9 +89,12 @@ public class User implements Serializable {
 	
 	private void fireStatusChangeEvent () {
 		StatusChangeEvent evt = new StatusChangeEvent(this);
-		for (StatusChangeListener listener : stateChangeListenerList ) {
-			listener.statusChangeEventOccurred(evt);
+		if ( stateChangeListenerList != null ) {
+			for (StatusChangeListener listener : stateChangeListenerList ) {
+				listener.statusChangeEventOccurred(evt);
+			}
 		}
+		
 	}
 	
 	

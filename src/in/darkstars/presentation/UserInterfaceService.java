@@ -28,6 +28,8 @@ import in.darkstars.service.ChatService;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -77,7 +79,7 @@ public class UserInterfaceService extends ChatService {
 	private Border lineBorder;
 	private Border etchedBorder;
 	private JMenu status;
-	private JRadioButtonMenuItem available;
+	private JRadioButtonMenuItem online;
 	private JRadioButtonMenuItem busy;
 	private JRadioButtonMenuItem away;
 	private ButtonGroup statusBtnGrp;
@@ -143,12 +145,16 @@ public class UserInterfaceService extends ChatService {
 		
 		exit = new JMenuItem("Exit");
 		statusBtnGrp = new ButtonGroup();
-		available = new JRadioButtonMenuItem("Available");
+		online = new JRadioButtonMenuItem("Online", true);
 		busy = new JRadioButtonMenuItem("Busy");
 		away = new JRadioButtonMenuItem("Away");
-		statusBtnGrp.add(available);
+		online.addActionListener(new OnlineRadioMenuItemActionListener ());
+		busy.addActionListener(new BusyRadioMenuItemActionListener ());
+		away.addActionListener(new AwayRadioMenuItemActionListener ());
+		statusBtnGrp.add(online);
 		statusBtnGrp.add(busy);
 		statusBtnGrp.add(away);
+
 		
 		about = new JMenuItem("About");
 		manual = new JMenuItem("Manual");
@@ -158,7 +164,7 @@ public class UserInterfaceService extends ChatService {
 		
 		
 		file.add(exit);
-		status.add(available);
+		status.add(online);
 		status.add(busy);
 		status.add(away);
 		settings.add(secure);
@@ -232,7 +238,43 @@ public class UserInterfaceService extends ChatService {
     
 
 	}
+	
+	class OnlineRadioMenuItemActionListener implements ActionListener {
+
 		
+		public void actionPerformed(ActionEvent e) {
+			
+			getUser().setStatus(User.Status.Online);
+			LOGGER.info("Status changed to Online");
+			
+		}
+		
+	}
+		
+	class BusyRadioMenuItemActionListener implements ActionListener {
+
+		
+		public void actionPerformed(ActionEvent e) {
+			
+			getUser().setStatus(User.Status.Busy);			
+			LOGGER.info("Status changed to Busy");
+		}
+		
+	}
+	
+	class AwayRadioMenuItemActionListener implements ActionListener {
+
+		
+		public void actionPerformed(ActionEvent e) {
+			
+			getUser().setStatus(User.Status.Away);
+			LOGGER.info("Status changed to Away");
+			
+		}
+		
+	}
+
+
 	
 	
 

@@ -81,6 +81,12 @@ public class SendEventService extends ChatService implements StatusChangeListene
 					case Offline:
 						eventToSend.setType(Status.Offline);
 						break;
+					case Busy:
+						eventToSend.setType(Status.Busy);
+						break;
+					case Away:
+						eventToSend.setType(Status.Away);
+						break;
 					default:
 						break;
 					
@@ -145,6 +151,12 @@ public class SendEventService extends ChatService implements StatusChangeListene
 				break;
 			case Offline:
 				eventToSend.setType(Status.Offline);
+				break;
+			case Busy:
+				eventToSend.setType(Status.Busy);
+				break;
+			case Away:
+				eventToSend.setType(Status.Away);
 				break;
 			default:
 				break;
