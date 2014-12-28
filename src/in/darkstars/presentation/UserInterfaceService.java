@@ -26,10 +26,12 @@ import in.darkstars.dto.User.Status;
 import in.darkstars.helper.DirtyVector;
 import in.darkstars.service.ChatService;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -37,7 +39,10 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 
 import org.apache.log4j.Logger;
 
@@ -63,22 +68,32 @@ public class UserInterfaceService extends ChatService {
 	private int height;
 	private int width;
 	public static final String TITLE="chat4J";
-	private String WIDTH = "width";
-	private String HEIGHT = "height";
+	private String FRAME_WIDTH = "frameWidth";
+	private String FRAME_HEIGHT = "frameHeight";
+	private JTextPane chatWindow;
+	private JTextPane inputWindow;
+	private Border lineBorder;
+	private Border etchedBorder;
 	
 	public void init ( ) {
 		
-		height = Integer.parseInt(getConfig().getProperty(HEIGHT) );
-		width = Integer.parseInt(getConfig().getProperty(WIDTH));
+		lineBorder = BorderFactory.createLineBorder(Color.black);
+		etchedBorder= BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);				
+		height = Integer.parseInt(getConfig().getProperty(FRAME_HEIGHT) );
+		width = Integer.parseInt(getConfig().getProperty(FRAME_WIDTH));
 		frame = new JFrame(TITLE);
 		frame.setPreferredSize(new Dimension(width, height) );
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
+		frame.setLayout(null);
 		frame.addWindowListener( new Chat4JWindowListener());
 		
 		frame.setJMenuBar( initMenuBar());
-		frame.add(initUserList());
+		frame.getContentPane().add(initChatWindow());
+		frame.getContentPane().add(initInputWindow());
+		frame.getContentPane().add(initUserList());
+		
 		frame.pack();
 		frame.setVisible(true);
 		
@@ -86,10 +101,28 @@ public class UserInterfaceService extends ChatService {
 	
 	private JList initUserList () {
 		userList = new JList<User>();
+		userList.setBounds(0, 0, 100, 400);
 		userList.setModel(new DefaultListModel<User>()  );
 		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
 		return userList;
+	}
+	
+	private JTextPane initChatWindow () {
+		
+		chatWindow = new JTextPane();
+		chatWindow.setEditable(false);
+		chatWindow.setBounds(100, 0, 300, 300);		
+		chatWindow.setBorder(etchedBorder);
+		return chatWindow;
+	}
+	
+	private JTextPane initInputWindow () {
+		
+		inputWindow = new JTextPane();		
+		inputWindow.setBounds(100, 300, 300, 100);
+		inputWindow.setBorder(lineBorder);
+		return inputWindow;
+		
 	}
 	
 	private JMenuBar initMenuBar () {
