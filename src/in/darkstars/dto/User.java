@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTextPane;
+
 /*Copyright (c) <2014> <dis-card>.
 All rights reserved.
 
@@ -39,7 +41,7 @@ public class User implements Serializable {
 	}
 	private Status status;
 	private transient List <StatusChangeListener> stateChangeListenerList = new ArrayList<StatusChangeListener>();	
-	
+	private transient JTextPane chatWindow;
 	
 	public String getNickName() {
 		return nickName;
@@ -96,6 +98,14 @@ public class User implements Serializable {
 		}
 		
 	}
+	public JTextPane getChatWindow() {
+		return chatWindow;
+	}
+	public void setChatWindow(JTextPane chatWindow) {
+		this.chatWindow = chatWindow;
+	}
+	
+	
 	
 	
 

@@ -28,8 +28,11 @@ import in.darkstars.service.ChatService;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -45,6 +48,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
@@ -70,6 +75,8 @@ public class UserInterfaceService extends ChatService {
 	
 	private JList<User> userList;
 	
+	private JScrollPane chatWindowScrollPane;
+	
 	private int height;
 	private int width;
 	public static final String TITLE="chat4J";
@@ -89,6 +96,8 @@ public class UserInterfaceService extends ChatService {
 	private ImageIcon busyIcon = new ImageIcon("icon/busy.png");
 	private ImageIcon awayIcon = new ImageIcon("icon/away.png");
 	
+	private Font serifFont = new Font("Serif", Font.ITALIC, 15);
+	private Font monoTypeCrosive = new Font("Monotype Corsiva",Font.PLAIN, 10);
 	public void init ( ) {
 		
 		lineBorder = BorderFactory.createLineBorder(Color.black);
@@ -119,16 +128,35 @@ public class UserInterfaceService extends ChatService {
 		userList.setModel(new DefaultListModel<User>()  );
 		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		userList.setCellRenderer(new ListEntryCellRenderer());
+		userList.addMouseListener(new ListAction());
 		return userList;
 	}
 	
-	private JTextPane initChatWindow () {
+	private JScrollPane initChatWindow () {
 		
 		chatWindow = new JTextPane();
+		chatWindow.setContentType("text/html");
 		chatWindow.setEditable(false);
 		chatWindow.setBounds(100, 0, 300, 300);		
 		chatWindow.setBorder(etchedBorder);
-		return chatWindow;
+		chatWindow.setFont(serifFont);
+		chatWindow.setText("Copyright (c) 2014 dis-card.");
+				
+				/*"All rights reserved."
+				+ "Redistribution and use in source and binary forms are permitted"
+				+ "provided that the above copyright notice and this paragraph are"
+				+ "duplicated in all such forms and that any documentation,"
+				+ "advertising materials, and other materials related to such"
+				+ "distribution and use acknowledge that the software was developed"
+				+ "by the <dis-card>. The name of the"
+				+ "<dis-card> may not be used to endorse or promote products derived"
+				+ "from this software without specific prior written permission."
+				+ "THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR"
+				+ "IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED"
+				+ "WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE"); */
+		chatWindowScrollPane = new JScrollPane(chatWindow);
+		chatWindowScrollPane.setBounds(100, 0, 300, 300);
+		return chatWindowScrollPane;
 	}
 	
 	private JTextPane initInputWindow () {
@@ -305,7 +333,7 @@ public class UserInterfaceService extends ChatService {
 	    	   break;
 	      }	      
 	   
-	      /*if (isSelected) {
+	      if (isSelected) {
 	         setBackground(list.getSelectionBackground());
 	         setForeground(list.getSelectionForeground());
 	      }
@@ -313,13 +341,27 @@ public class UserInterfaceService extends ChatService {
 	         setBackground(list.getBackground());
 	         setForeground(list.getForeground());
 	      }
+	      /*
 	  
 	      setEnabled(list.isEnabled());
-	      setFont(list.getFont());
+	      setFont(list.getFont()); */
 	      setOpaque(true);
-	  */
+	  
 	      return this;
 	   }
+	}
+	
+	class ListAction extends MouseAdapter {
+		@Override
+		public void mouseClicked ( MouseEvent e ) {
+			 if(e.getClickCount() == 2){
+			     int index = userList.locationToIndex(e.getPoint());
+			     DefaultListModel<User> dlm = (DefaultListModel<User>) userList.getModel();
+			     User user = dlm.getElementAt(index);			     
+			     System.out.println("Double clicked on " + user.getNickName());
+			     }
+			
+		}
 	}
 	
 	

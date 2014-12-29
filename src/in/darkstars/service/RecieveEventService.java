@@ -78,7 +78,7 @@ public class RecieveEventService extends ChatService {
 				if ( obj instanceof Event ) {
 					Event evt = (Event) obj;
 					User user = evt.getUser();
-					if ( !user.equals(getUser()) ) {
+			//		if ( !user.equals(getUser()) ) {
 						
 						String nickName = user.getNickName();
 						List<User> userList = getUserList();						
@@ -160,7 +160,7 @@ public class RecieveEventService extends ChatService {
 							}							
 						}*/
 												
-					}
+				//	}
 					
 				}			
 				ois.close();
