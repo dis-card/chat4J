@@ -49,7 +49,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
@@ -134,29 +133,40 @@ public class UserInterfaceService extends ChatService {
 	
 	private JScrollPane initChatWindow () {
 		
+		JTextPane chatWindow = createChatWindow();		
+		chatWindow.setText(getCopyRight());		
+		return addScrollBar(chatWindow);
+	}
+	
+	private JScrollPane addScrollBar ( Component comp ) {
+		chatWindowScrollPane = new JScrollPane(chatWindow);
+		chatWindowScrollPane.setBounds(100, 0, 300, 300);
+		return chatWindowScrollPane;
+	}
+	
+	private JTextPane createChatWindow() {
 		chatWindow = new JTextPane();
 		chatWindow.setContentType("text/html");
 		chatWindow.setEditable(false);
 		chatWindow.setBounds(100, 0, 300, 300);		
-		chatWindow.setBorder(etchedBorder);
-		chatWindow.setFont(serifFont);
-		chatWindow.setText("Copyright (c) 2014 dis-card.");
-				
-				/*"All rights reserved."
-				+ "Redistribution and use in source and binary forms are permitted"
-				+ "provided that the above copyright notice and this paragraph are"
-				+ "duplicated in all such forms and that any documentation,"
-				+ "advertising materials, and other materials related to such"
-				+ "distribution and use acknowledge that the software was developed"
-				+ "by the <dis-card>. The name of the"
-				+ "<dis-card> may not be used to endorse or promote products derived"
-				+ "from this software without specific prior written permission."
-				+ "THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR"
-				+ "IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED"
-				+ "WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE"); */
-		chatWindowScrollPane = new JScrollPane(chatWindow);
-		chatWindowScrollPane.setBounds(100, 0, 300, 300);
-		return chatWindowScrollPane;
+		chatWindow.setBorder(etchedBorder);			
+		return chatWindow;
+	}
+	
+	private String getCopyRight() {
+		return "Copyright (c) 2014 dis-card. All rights reserved."
+		+ "Redistribution and use in source and binary forms are permitted"
+		+ "provided that the above copyright notice and this paragraph are"
+		+ "duplicated in all such forms and that any documentation,"
+		+ "advertising materials, and other materials related to such"
+		+ "distribution and use acknowledge that the software was developed"
+		+ "by the <dis-card>. The name of the"
+		+ "<dis-card> may not be used to endorse or promote products derived"
+		+ "from this software without specific prior written permission."
+		+ "THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR"
+		+ "IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED"
+		+ "WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE"; 
+		
 	}
 	
 	private JTextPane initInputWindow () {
@@ -359,7 +369,10 @@ public class UserInterfaceService extends ChatService {
 			     DefaultListModel<User> dlm = (DefaultListModel<User>) userList.getModel();
 			     User user = dlm.getElementAt(index);			     
 			     System.out.println("Double clicked on " + user.getNickName());
-			     }
+			     chatWindow.setText(user.getChatHistory().toString());
+				
+				
+			}
 			
 		}
 	}
